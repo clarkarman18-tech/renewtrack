@@ -223,7 +223,33 @@ async function syncUpdate(id, updatedData) {
         });
         loadLiveAccounts();
     } catch (err) { console.error("Sync error:", err); }
-}
+  
+}async function addNewAccount(newData) {
+    try {
+        await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ data: [newData] }) // SheetDB requires an array
+        });
+        loadLiveAccounts(); // Refresh the list
+    } catch (err) {
+        console.error("Error adding account:", err);
+    }
+}// Inside your saveNewAccount() function:
+const newId = accounts.length > 0 ? Math.max(...accounts.map(a => a.id)) + 1 : 1;
+const payload = {
+    id: newId,
+    name: document.getElementById('f-name').value,
+    domain: document.getElementById('f-domain').value,
+    renewalDate: document.getElementById('f-date').value,
+    am: document.getElementById('f-am').value,
+    status: document.getElementById('f-status').value,
+    discontinued: "FALSE",
+    notes: ""
+};
+
+addNewAccount(payload); // This sends it to Google Sheets
+closeModal();
 
 function daysUntil(s){const d=new Date(s); d.setHours(0,0,0,0); return Math.round((d-today)/86400000);}
 function fmtDate(s){return new Date(s).toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'});}
