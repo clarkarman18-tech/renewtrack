@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>RenewTrack Pro - Live Edition</title>
+<title>RenewTrack</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -21,42 +21,68 @@
 }
 body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14px}
 .app{min-height:100vh;display:flex;flex-direction:column}
+
+/* TOPBAR */
 .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:54px;flex-shrink:0}
 .logo{font-size:15px;font-weight:600;letter-spacing:-.3px}
 .logo span{color:var(--blue)}
 .nav-tabs{display:flex;gap:2px;margin-left:16px}
 .nav-tab{padding:6px 14px;border-radius:var(--radius-md);font-size:13px;cursor:pointer;color:var(--muted);border:none;background:none;transition:all .15s;font-family:var(--font)}
 .nav-tab.active{background:#f0f0ed;color:var(--text);font-weight:500}
+.nav-tab:hover:not(.active){background:#f0f0ed}
 .topbar-right{display:flex;gap:8px;align-items:center}
 .search-box{padding:7px 12px;border-radius:var(--radius-md);font-size:13px;border:1px solid var(--border-md);background:var(--surface);color:var(--text);font-family:var(--font);width:200px}
+.search-box:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,95,165,.1)}
 .btn{padding:7px 14px;border-radius:var(--radius-md);font-size:13px;cursor:pointer;border:1px solid var(--border-md);background:var(--surface);color:var(--text);transition:all .15s;font-family:var(--font)}
+.btn:hover{background:#f0f0ed}
 .btn-primary{background:var(--blue);color:#fff;border-color:var(--blue)}
-.btn-danger{color:var(--red);border-color:var(--border)}
+.btn-primary:hover{background:var(--blue-dk)}
+.btn-sm{padding:5px 11px;font-size:12px}
+
+/* LAYOUT */
 .layout{display:flex;flex:1;min-height:0}
 .sidebar{width:232px;background:var(--surface);border-right:1px solid var(--border);padding:14px 10px;flex-shrink:0;overflow-y:auto}
 .sidebar-label{font-size:10px;font-weight:600;color:var(--hint);text-transform:uppercase;letter-spacing:.8px;padding:0 8px;margin:16px 0 5px}
+.sidebar-label:first-child{margin-top:0}
 .sb-item{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:var(--radius-md);font-size:13px;cursor:pointer;color:var(--muted);transition:all .12s;user-select:none}
 .sb-item.active{background:var(--blue-bg);color:var(--blue);font-weight:500}
+.sb-item:hover:not(.active){background:#f0f0ed;color:var(--text)}
 .s-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .badge{margin-left:auto;background:#f0f0ed;color:var(--muted);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:500}
+.badge.red{background:var(--red-bg);color:var(--red)}
+.badge.amber{background:var(--amber-bg);color:var(--amber)}
+
+/* CONTENT */
 .content{flex:1;overflow-y:auto;padding:20px;min-width:0}
 .page{display:none}
 .page.active{display:block}
 .content-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:8px;flex-wrap:wrap}
 .content-header h1{font-size:17px;font-weight:600}
+.filter-select{padding:6px 10px;border-radius:var(--radius-md);font-size:12px;border:1px solid var(--border-md);background:var(--surface);color:var(--muted);font-family:var(--font);cursor:pointer}
+
+/* STATS */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
 .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:13px 15px}
 .stat-label{font-size:10px;color:var(--hint);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
 .stat-value{font-size:24px;font-weight:600}
+
+/* LEGEND */
+.legend{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
+.legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* TABLE */
 .table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
 .t-head{display:grid;grid-template-columns:26px 1.8fr 1.1fr 1fr 1.1fr 1fr 0.8fr 70px;padding:9px 14px;background:#f8f8f6;border-bottom:1px solid var(--border);font-size:10px;font-weight:600;color:var(--hint);text-transform:uppercase;letter-spacing:.5px;gap:4px}
 .t-row{display:grid;grid-template-columns:26px 1.8fr 1.1fr 1fr 1.1fr 1fr 0.8fr 70px;padding:11px 14px;border-bottom:1px solid var(--border);align-items:center;cursor:pointer;transition:background .1s;gap:4px}
+.t-row:last-child{border-bottom:none}
 .t-row:hover{background:#f8f8f6}
 .acct-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .cell{font-size:12px;color:var(--muted)}
 .days-pill{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:3px 9px;border-radius:10px;white-space:nowrap}
 .d-red{background:var(--red-bg);color:var(--red)}
 .d-amber{background:var(--amber-bg);color:var(--amber)}
+.d-green{background:var(--green-bg);color:var(--green-dk)}
 .d-blue{background:var(--blue-bg);color:var(--blue-dk)}
 .d-gray{background:#f0f0ed;color:var(--hint)}
 .status-pill{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;white-space:nowrap}
@@ -64,33 +90,73 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 .s-proposal{background:var(--purple-bg);color:var(--purple-dk)}
 .s-signed{background:var(--green-bg);color:var(--green-dk)}
 .s-renewed{background:var(--teal-bg);color:var(--teal)}
-.s-discontinued{background:var(--red-bg);color:var(--red)}
+.s-none{background:#f0f0ed;color:var(--hint)}
+.row-actions{display:flex;gap:3px;opacity:0;transition:opacity .1s}
+.t-row:hover .row-actions{opacity:1}
+.icon-btn{width:26px;height:26px;border-radius:var(--radius-md);border:1px solid var(--border);background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.icon-btn:hover{background:#f0f0ed}
+.am-avatar{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;flex-shrink:0}
+.am1{background:var(--purple-bg);color:var(--purple-dk)}
+.am2{background:var(--teal-bg);color:var(--teal)}
+.am3{background:var(--coral-bg);color:var(--coral)}
+.empty-state{text-align:center;padding:48px;color:var(--hint);font-size:13px}
+
+/* PIPELINE */
+.pipeline-view{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px}
+.p-col{min-width:190px;flex-shrink:0}
+.p-col-head{font-size:11px;font-weight:600;color:var(--muted);padding:0 0 9px;display:flex;align-items:center;justify-content:space-between}
+.p-col-cnt{background:#f0f0ed;font-size:10px;padding:2px 7px;border-radius:10px;color:var(--hint)}
+.p-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:11px 12px;margin-bottom:8px;cursor:pointer;transition:border-color .12s}
+.p-card:hover{border-color:var(--border-md)}
+.p-card-name{font-size:12px;font-weight:500;margin-bottom:2px}
+.p-card-domain{font-size:10px;color:var(--hint);margin-bottom:8px}
+.p-card-foot{display:flex;align-items:center;justify-content:space-between}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:flex-start;justify-content:center;padding-top:48px}
+.overlay.open{display:flex}
+.modal{background:var(--surface);border-radius:var(--radius-lg);width:560px;max-height:82vh;overflow-y:auto;border:1px solid var(--border-md)}
+.modal-head{padding:16px 18px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-head h2{font-size:14px;font-weight:600}
+.modal-close{width:26px;height:26px;border-radius:var(--radius-md);border:1px solid var(--border);background:none;cursor:pointer;font-size:14px;color:var(--muted);display:flex;align-items:center;justify-content:center}
+.modal-body{padding:18px}
+.form-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.form-1{margin-bottom:12px}
+.f-label{font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px;display:block}
+.f-input{width:100%;padding:7px 10px;border-radius:var(--radius-md);border:1px solid var(--border-md);background:var(--surface);color:var(--text);font-size:13px;font-family:var(--font)}
+.f-input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,95,165,.1)}
+.form-section-lbl{font-size:10px;font-weight:600;color:var(--hint);text-transform:uppercase;letter-spacing:.6px;margin:14px 0 8px;padding-top:12px;border-top:1px solid var(--border)}
+.contacts-list{display:flex;flex-direction:column;gap:7px;margin-bottom:8px}
+.c-card{background:#f8f8f6;border-radius:var(--radius-md);padding:9px 11px;display:flex;align-items:center;gap:9px}
+.c-av{width:30px;height:30px;border-radius:50%;background:var(--blue-bg);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0}
+.c-info{flex:1;min-width:0}
+.c-name{font-size:12px;font-weight:500}
+.c-detail{font-size:11px;color:var(--hint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.c-remove{width:22px;height:22px;border-radius:var(--radius-md);border:none;background:none;cursor:pointer;color:var(--hint);font-size:14px;display:flex;align-items:center;justify-content:center}
+.c-remove:hover{color:var(--red);background:var(--red-bg)}
+.add-c-box{background:#f8f8f6;border-radius:var(--radius-lg);padding:12px 13px;border:1px dashed var(--border-md)}
+.modal-footer{padding:12px 18px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
+
+/* DETAIL PANEL */
 .panel-overlay{display:none;position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.25)}
 .panel-overlay.open{display:block}
 .detail-panel{position:fixed;right:0;top:0;width:360px;height:100%;background:var(--surface);border-left:1px solid var(--border);overflow-y:auto;transform:translateX(100%);transition:transform .22s ease;z-index:160}
 .detail-panel.open{transform:translateX(0)}
 .panel-head{padding:54px 16px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between}
 .p-name{font-size:15px;font-weight:600}
+.p-sub{font-size:11px;color:var(--hint);margin-top:2px}
 .panel-body{padding:14px 16px}
 .ps{margin-bottom:18px}
 .ps-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--hint);margin-bottom:9px}
 .info-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:7px}
-.action-box{margin-top:12px;padding:12px;border-radius:var(--radius-md);background:var(--bg);border:1px solid var(--border)}
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:flex-start;justify-content:center;padding-top:48px}
-.overlay.open{display:flex}
-.modal{background:var(--surface);border-radius:var(--radius-lg);width:400px;border:1px solid var(--border-md)}
-.modal-head{padding:16px 18px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.modal-body{padding:18px}
-.f-label{font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px;display:block}
-.f-input{width:100%;padding:7px 10px;border-radius:var(--radius-md);border:1px solid var(--border-md);background:var(--surface);color:var(--text);font-size:13px;font-family:var(--font)}
-.am-avatar{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;flex-shrink:0}
-.am1{background:var(--purple-bg);color:var(--purple-dk)}
-.am2{background:var(--teal-bg);color:var(--teal)}
-.am3{background:var(--coral-bg);color:var(--coral)}
-.pipeline-view{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px}
-.p-col{min-width:190px;flex-shrink:0}
-.p-col-head{font-size:11px;font-weight:600;color:var(--muted);padding:0 0 9px;display:flex;align-items:center;justify-content:space-between}
-.p-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:11px 12px;margin-bottom:8px;cursor:pointer}
+.info-key{color:var(--muted)}
+.info-val{font-weight:500}
+.tl-item{display:flex;gap:9px;padding-bottom:12px;position:relative}
+.tl-dot{width:8px;height:8px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.tl-line{position:absolute;left:3.5px;top:12px;bottom:0;width:1px;background:var(--border)}
+.tl-item:last-child .tl-line{display:none}
+.tl-text{font-size:12px;color:var(--muted)}
+.tl-date{font-size:10px;color:var(--hint);margin-top:1px}
 </style>
 </head>
 <body>
@@ -104,68 +170,170 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
       </div>
     </div>
     <div class="topbar-right">
-      <input type="text" class="search-box" placeholder="Search..." id="gSearch" oninput="render()" />
-      <button class="btn btn-primary" onclick="alert('Add function disabled for sheet link demo. Use your Google Sheet to add rows.')">+ Add Row</button>
+      <input type="text" class="search-box" placeholder="Search accounts..." id="gSearch" oninput="render()" />
+      <button class="btn btn-primary" onclick="openModal()">+ Add Account</button>
     </div>
   </div>
 
   <div class="layout">
     <div class="sidebar">
-      <div class="sidebar-label">Account Manager</div>
-      <div class="sb-item active" id="am-all" onclick="setAM('all',this)">All AMs <span class="badge" id="cnt-all">0</span></div>
-      <div class="sb-item" id="am-AM1" onclick="setAM('AM1',this)">AM1 — Reyes <span class="badge" id="cnt-AM1">0</span></div>
-      <div class="sb-item" id="am-AM2" onclick="setAM('AM2',this)">AM2 — Santos <span class="badge" id="cnt-AM2">0</span></div>
-      <div class="sb-item" id="am-AM3" onclick="setAM('AM3',this)">AM3 — Cruz <span class="badge" id="cnt-AM3">0</span></div>
+      <div class="sidebar-label" style="margin-top:0">Account Manager</div>
+      <div class="sb-item active" id="am-all" onclick="setAM('all',this)">
+        <div class="s-dot" style="background:var(--border-md)"></div>All AMs
+        <span class="badge" id="cnt-all">0</span>
+      </div>
+      <div class="sb-item" id="am-AM1" onclick="setAM('AM1',this)">
+        <div class="s-dot" style="background:var(--purple)"></div>AM1 — Reyes
+        <span class="badge" id="cnt-AM1">0</span>
+      </div>
+      <div class="sb-item" id="am-AM2" onclick="setAM('AM2',this)">
+        <div class="s-dot" style="background:var(--teal)"></div>AM2 — Santos
+        <span class="badge" id="cnt-AM2">0</span>
+      </div>
+      <div class="sb-item" id="am-AM3" onclick="setAM('AM3',this)">
+        <div class="s-dot" style="background:var(--coral)"></div>AM3 — Cruz
+        <span class="badge" id="cnt-AM3">0</span>
+      </div>
+
+      <div class="sidebar-label">Urgency</div>
+      <div class="sb-item" id="f-critical" onclick="setFilter('critical',this)">
+        <div class="s-dot" style="background:var(--red)"></div>Critical (&lt;10d)
+        <span class="badge red" id="cnt-critical">0</span>
+      </div>
+      <div class="sb-item" id="f-warning" onclick="setFilter('warning',this)">
+        <div class="s-dot" style="background:var(--amber)"></div>Warning (&lt;30d)
+        <span class="badge amber" id="cnt-warning">0</span>
+      </div>
+      <div class="sb-item" id="f-upcoming" onclick="setFilter('upcoming',this)">
+        <div class="s-dot" style="background:var(--green)"></div>Upcoming (&lt;60d)
+        <span class="badge" id="cnt-upcoming">0</span>
+      </div>
+      <div class="sb-item" id="f-healthy" onclick="setFilter('healthy',this)">
+        <div class="s-dot" style="background:var(--blue)"></div>Healthy (60–90d)
+        <span class="badge" id="cnt-healthy">0</span>
+      </div>
+      <div class="sb-item" id="f-overdue" onclick="setFilter('overdue',this)">
+        <div class="s-dot" style="background:var(--hint)"></div>Overdue
+        <span class="badge" id="cnt-overdue">0</span>
+      </div>
 
       <div class="sidebar-label">Status</div>
-      <div class="sb-item" id="f-notice" onclick="setFilter('notice',this)">Notice Sent <span class="badge" id="cnt-notice">0</span></div>
-      <div class="sb-item" id="f-proposal" onclick="setFilter('proposal',this)">Proposal Sent <span class="badge" id="cnt-proposal">0</span></div>
-      <div class="sb-item" id="f-signed" onclick="setFilter('signed',this)">Signed <span class="badge" id="cnt-signed">0</span></div>
-      <div class="sb-item" id="f-renewed" onclick="setFilter('renewed',this)">Renewed <span class="badge" id="cnt-renewed">0</span></div>
-      
-      <div class="sidebar-label">Archives</div>
-      <div class="sb-item" id="f-discontinued" onclick="setFilter('discontinued',this)">
-        <div class="s-dot" style="background:var(--red)"></div>Discontinued
-        <span class="badge red" id="cnt-discontinued">0</span>
+      <div class="sb-item" id="f-notice" onclick="setFilter('notice',this)">
+        <div class="s-dot" style="background:var(--blue)"></div>Notice Sent
+        <span class="badge" id="cnt-notice">0</span>
+      </div>
+      <div class="sb-item" id="f-proposal" onclick="setFilter('proposal',this)">
+        <div class="s-dot" style="background:var(--purple)"></div>Proposal Sent
+        <span class="badge" id="cnt-proposal">0</span>
+      </div>
+      <div class="sb-item" id="f-signed" onclick="setFilter('signed',this)">
+        <div class="s-dot" style="background:var(--green)"></div>Contract Signed
+        <span class="badge" id="cnt-signed">0</span>
+      </div>
+      <div class="sb-item" id="f-renewed" onclick="setFilter('renewed',this)">
+        <div class="s-dot" style="background:var(--teal)"></div>Renewed
+        <span class="badge" id="cnt-renewed">0</span>
+      </div>
+      <div class="sb-item" id="f-none" onclick="setFilter('none',this)">
+        <div class="s-dot" style="background:var(--border-md)"></div>No Status
+        <span class="badge" id="cnt-none">0</span>
       </div>
     </div>
 
     <div class="content">
       <div class="page active" id="page-accounts">
-        <div class="content-header"><h1 id="page-title">Active Accounts</h1></div>
-        <div class="stats-row">
-          <div class="stat-card"><div class="stat-label">Total Active</div><div class="stat-value" id="s-total">0</div></div>
-          <div class="stat-card"><div class="stat-label">Critical</div><div class="stat-value" style="color:var(--red)" id="s-crit">0</div></div>
-          <div class="stat-card"><div class="stat-label">Renewed</div><div class="stat-value" style="color:var(--teal)" id="s-ren">0</div></div>
-          <div class="stat-card"><div class="stat-label">Discontinued</div><div class="stat-value" style="color:var(--red)" id="s-disc">0</div></div>
+        <div class="content-header">
+          <h1 id="page-title">All Accounts</h1>
+          <select class="filter-select" onchange="render()" id="sortSel">
+            <option value="days-asc">Soonest renewal first</option>
+            <option value="days-desc">Latest renewal first</option>
+            <option value="name">Name A–Z</option>
+            <option value="am">By account manager</option>
+          </select>
         </div>
+
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-label">Total Accounts</div><div class="stat-value" id="s-total">0</div></div>
+          <div class="stat-card"><div class="stat-label">Critical (&lt;10 days)</div><div class="stat-value" style="color:var(--red)" id="s-crit">0</div></div>
+          <div class="stat-card"><div class="stat-label">Expiring &lt;90 days</div><div class="stat-value" style="color:var(--amber)" id="s-exp">0</div></div>
+          <div class="stat-card"><div class="stat-label">Renewed</div><div class="stat-value" style="color:var(--teal)" id="s-ren">0</div></div>
+        </div>
+
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--red-bg);border:1px solid #F09595"></div><span style="color:var(--red);font-weight:600">Red</span> = under 10 days</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--amber-bg);border:1px solid #EF9F27"></div><span style="color:var(--amber);font-weight:600">Yellow</span> = 10–30 days</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--green-bg);border:1px solid #97C459"></div><span style="color:var(--green);font-weight:600">Green</span> = 30–60 days</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--blue-bg);border:1px solid #85B7EB"></div><span style="color:var(--blue);font-weight:600">Blue</span> = 60–90 days</div>
+        </div>
+
         <div class="table-wrap">
-          <div class="t-head"><div></div><div>Account</div><div>Domain</div><div>Renewal</div><div>Remaining</div><div>Status</div><div>AM</div><div></div></div>
+          <div class="t-head">
+            <div></div><div>Account</div><div>Domain</div><div>Renewal Date</div><div>Days Until</div><div>Status</div><div>AM</div><div></div>
+          </div>
           <div id="accounts-list"></div>
         </div>
       </div>
+
       <div class="page" id="page-pipeline">
-        <div class="content-header"><h1>Pipeline</h1></div>
+        <div class="content-header"><h1>Renewal Pipeline</h1></div>
         <div class="pipeline-view" id="pipeline-view"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ACTION MODAL -->
-<div class="overlay" id="actionOverlay">
+<!-- MODAL -->
+<div class="overlay" id="modalOverlay">
   <div class="modal">
-    <div class="modal-head"><h2 id="action-title">Update Account</h2><button class="modal-close" onclick="closeActionModal()">✕</button></div>
+    <div class="modal-head">
+      <h2 id="modal-title">Add Account</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
     <div class="modal-body">
-      <div id="renew-fields" style="display:none">
-        <label class="f-label">New Renewal Date</label>
-        <input type="date" class="f-input" id="new-renew-date" style="margin-bottom:12px" />
+      <div class="form-2">
+        <div><label class="f-label">Company Name *</label><input class="f-input" id="f-name" placeholder="Acme Corporation" /></div>
+        <div><label class="f-label">Domain *</label><input class="f-input" id="f-domain" placeholder="acme.com" /></div>
       </div>
-      <div id="disc-fields" style="display:none">
-        <label class="f-label">Reason for Discontinuation</label>
-        <textarea class="f-input" id="disc-reason" placeholder="Reason..." style="height:80px;margin-bottom:12px;width:100%"></textarea>
+      <div class="form-2">
+        <div><label class="f-label">Renewal Date *</label><input class="f-input" type="date" id="f-date" /></div>
+        <div><label class="f-label">Account Manager *</label>
+          <select class="f-input" id="f-am">
+            <option value="AM1">AM1 — Reyes</option>
+            <option value="AM2">AM2 — Santos</option>
+            <option value="AM3">AM3 — Cruz</option>
+          </select>
+        </div>
       </div>
-      <button class="btn btn-primary" id="action-save-btn" style="width:100%">Save to Sheet</button>
+      <div class="form-2">
+        <div><label class="f-label">Status</label>
+          <select class="f-input" id="f-status">
+            <option value="none">— No status —</option>
+            <option value="notice">Notice Sent</option>
+            <option value="proposal">Proposal Sent</option>
+            <option value="signed">Contract Signed</option>
+            <option value="renewed">Renewed</option>
+          </select>
+        </div>
+        <div><label class="f-label">Notes</label><input class="f-input" id="f-notes" placeholder="Optional notes..." /></div>
+      </div>
+      <div class="form-section-lbl">Contacts</div>
+      <div class="contacts-list" id="modal-contacts"></div>
+      <div class="add-c-box">
+        <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:8px">Add Contact</div>
+        <div class="form-2">
+          <div><label class="f-label">Name</label><input class="f-input" id="c-name" placeholder="Jane Smith" style="background:#fff" /></div>
+          <div><label class="f-label">Role</label><input class="f-input" id="c-role" placeholder="IT Manager" style="background:#fff" /></div>
+        </div>
+        <div class="form-2">
+          <div><label class="f-label">Email</label><input class="f-input" id="c-email" placeholder="jane@acme.com" style="background:#fff" /></div>
+          <div><label class="f-label">Phone</label><input class="f-input" id="c-phone" placeholder="+63 917 000 0000" style="background:#fff" /></div>
+        </div>
+        <button class="btn btn-sm" onclick="addContact()">+ Add Contact</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" id="save-btn" onclick="saveAccount()">Add Account</button>
     </div>
   </div>
 </div>
@@ -173,188 +341,248 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14
 <!-- DETAIL PANEL -->
 <div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
 <div class="detail-panel" id="detailPanel">
-  <div class="panel-head"><div><div class="p-name" id="p-name"></div><div class="p-sub" id="p-domain"></div></div><button class="modal-close" onclick="closePanel()">✕</button></div>
+  <div class="panel-head">
+    <div><div class="p-name" id="p-name"></div><div class="p-sub" id="p-domain"></div></div>
+    <button class="modal-close" onclick="closePanel()">✕</button>
+  </div>
   <div class="panel-body">
-    <div class="ps"><div class="ps-title">Account Status</div><div id="p-info"></div></div>
-    <div id="overdue-actions" class="action-box" style="display:none">
-      <div style="font-weight:600; font-size:11px; margin-bottom:8px; color:var(--red)">ACTION REQUIRED: OVERDUE</div>
-      <div style="display:flex; gap:6px">
-        <button class="btn btn-primary btn-sm" id="btn-renew-trigger">Renew</button>
-        <button class="btn btn-danger btn-sm" id="btn-disc-trigger">Discontinue</button>
-      </div>
-    </div>
+    <div class="ps"><div class="ps-title">Renewal Info</div><div id="p-info"></div></div>
     <div class="ps"><div class="ps-title">Account Manager</div><div id="p-am"></div></div>
-    <div class="ps"><div class="ps-title">Notes</div><div id="p-notes" style="font-size:12px; color:var(--muted); white-space: pre-wrap;"></div></div>
+    <div class="ps"><div class="ps-title">Contacts</div><div id="p-contacts"></div></div>
+    <div class="ps"><div class="ps-title">Activity</div><div id="p-timeline"></div></div>
   </div>
 </div>
 
 <script>
-// --- CONFIGURE YOUR SHEETDB URL HERE ---
-const API_URL = "https://sheetdb.io/api/v1/5385mcigalwp0"; 
-
-const today=new Date(); today.setHours(0,0,0,0);
-const AMs={AM1:{name:'Reyes',cls:'am1'},AM2:{name:'Santos',cls:'am2'},AM3:{name:'Cruz',cls:'am3'}};
-let accounts=[];
-let activeAM='all', activeFilter='all', currentActionId=null;
-
-async function loadLiveAccounts() {
-    try {
-        if(API_URL.includes("https://sheetdb.io/api/v1/5385mcigalwp0")) {
-            console.warn("Please replace YOUR_API_ID with your actual SheetDB ID.");
-            return;
-        }
-        const response = await fetch(API_URL);
-        const data = await response.json();
-        accounts = data.map(a => ({
-            ...a,
-            id: parseInt(a.id),
-            discontinued: String(a.discontinued).toUpperCase() === "TRUE"
-        }));
-        render();
-    } catch (err) { console.error("Error loading data:", err); }
-}
-
-async function syncUpdate(id, updatedData) {
-    try {
-        await fetch(`${API_URL}/id/${id}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ data: updatedData })
-        });
-        loadLiveAccounts();
-    } catch (err) { console.error("Sync error:", err); }
-  
-}async function addNewAccount(newData) {
-    try {
-        await fetch(API_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ data: [newData] }) // SheetDB requires an array
-        });
-        loadLiveAccounts(); // Refresh the list
-    } catch (err) {
-        console.error("Error adding account:", err);
-    }
-}// Inside your saveNewAccount() function:
-const newId = accounts.length > 0 ? Math.max(...accounts.map(a => a.id)) + 1 : 1;
-const payload = {
-    id: newId,
-    name: document.getElementById('f-name').value,
-    domain: document.getElementById('f-domain').value,
-    renewalDate: document.getElementById('f-date').value,
-    am: document.getElementById('f-am').value,
-    status: document.getElementById('f-status').value,
-    discontinued: "FALSE",
-    notes: ""
+const today=new Date();today.setHours(0,0,0,0);
+const AMs={
+  AM1:{name:'Reyes',full:'AM1 — Carlo Reyes',cls:'am1'},
+  AM2:{name:'Santos',full:'AM2 — Maria Santos',cls:'am2'},
+  AM3:{name:'Cruz',full:'AM3 — Ben Cruz',cls:'am3'}
 };
+function offset(d){const dt=new Date(today);dt.setDate(dt.getDate()+d);return dt.toISOString().slice(0,10);}
+function daysUntil(s){const d=new Date(s);d.setHours(0,0,0,0);return Math.round((d-today)/86400000);}
+function fmtDate(s){if(!s)return'—';return new Date(s).toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'});}
+function initials(n){return n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();}
 
-addNewAccount(payload); // This sends it to Google Sheets
-closeModal();
+let accounts=[
+  {id:1,name:'Acme Corp',domain:'acme.com',renewalDate:offset(5),status:'proposal',am:'AM1',notes:'Long-time client, expanding seats',contacts:[{name:'John Dela Cruz',role:'IT Director',email:'john@acme.com',phone:'+63 917 123 4567'},{name:'Maria Santos',role:'Procurement',email:'maria@acme.com',phone:'+63 908 234 5678'}],created:offset(-90)},
+  {id:2,name:'Brightwave Media',domain:'brightwave.ph',renewalDate:offset(8),status:'notice',am:'AM1',notes:'Awaiting decision from new CMO',contacts:[{name:'Carlo Reyes',role:'CMO',email:'carlo@brightwave.ph',phone:'+63 919 876 5432'}],created:offset(-60)},
+  {id:3,name:'TechNova PH',domain:'technova.ph',renewalDate:offset(25),status:'signed',am:'AM1',notes:'Contract signed, awaiting payment',contacts:[{name:'Ana Lim',role:'CEO',email:'ana@technova.ph',phone:'+63 917 555 0011'}],created:offset(-30)},
+  {id:4,name:'PinoyCloud Inc.',domain:'pinoycloud.ph',renewalDate:offset(55),status:'proposal',am:'AM1',notes:'Proposal under review by board',contacts:[{name:'Ricky Go',role:'CTO',email:'ricky@pinoycloud.ph',phone:'+63 920 111 2222'}],created:offset(-20)},
+  {id:5,name:'Metro Digital',domain:'metrodigital.com.ph',renewalDate:offset(80),status:'none',am:'AM1',notes:'',contacts:[],created:offset(-10)},
+  {id:6,name:'Sunrise Healthcare',domain:'sunrise.health',renewalDate:offset(3),status:'proposal',am:'AM2',notes:'Follow up on pricing concerns',contacts:[{name:'Dr. Rivera',role:'CIO',email:'rivera@sunrise.health',phone:'+63 918 000 1111'}],created:offset(-45)},
+  {id:7,name:'Optima Fintech',domain:'optimafintech.com',renewalDate:offset(12),status:'notice',am:'AM2',notes:'Renewal negotiation ongoing',contacts:[{name:'Ben Garcia',role:'CFO',email:'ben@optimafintech.com',phone:'+63 920 333 4444'}],created:offset(-30)},
+  {id:8,name:'Global Logistics',domain:'globallogistics.com',renewalDate:offset(40),status:'none',am:'AM2',notes:'',contacts:[],created:offset(-15)},
+  {id:9,name:'VisayasAg Corp',domain:'visayasag.ph',renewalDate:offset(62),status:'signed',am:'AM2',notes:'Big upsell opportunity — 3 new branches',contacts:[{name:'Luz Ponce',role:'Operations Head',email:'luz@visayasag.ph',phone:'+63 917 777 8888'}],created:offset(-50)},
+  {id:10,name:'IslandHop Travel',domain:'islandhop.ph',renewalDate:offset(88),status:'renewed',am:'AM2',notes:'Successfully renewed for 2 years',contacts:[{name:'Paolo Reyes',role:'CEO',email:'paolo@islandhop.ph',phone:'+63 916 000 9999'}],created:offset(-120)},
+  {id:11,name:'ManilaFab Manufacturing',domain:'manilafab.com',renewalDate:offset(7),status:'signed',am:'AM3',notes:'Contract signed pending billing clearance',contacts:[{name:'Roberto Cruz',role:'Plant Manager',email:'rob@manilafab.com',phone:'+63 915 444 5555'}],created:offset(-60)},
+  {id:12,name:'EduTech PH',domain:'edutech.ph',renewalDate:offset(22),status:'notice',am:'AM3',notes:'Decision maker on leave until next week',contacts:[{name:'Yna Macaraeg',role:'IT Head',email:'yna@edutech.ph',phone:'+63 921 222 3333'}],created:offset(-40)},
+  {id:13,name:'SolarGen Energy',domain:'solargen.ph',renewalDate:offset(45),status:'proposal',am:'AM3',notes:'Competing with another vendor',contacts:[{name:'Greg Tan',role:'VP Operations',email:'greg@solargen.ph',phone:'+63 918 555 6666'},{name:'Lily Chan',role:'Finance',email:'lily@solargen.ph',phone:'+63 919 667 8899'}],created:offset(-25)},
+  {id:14,name:'RetailPro Systems',domain:'retailpro.ph',renewalDate:offset(70),status:'none',am:'AM3',notes:'',contacts:[],created:offset(-8)},
+  {id:15,name:'Luzon Shipping Co.',domain:'luzonship.com',renewalDate:offset(-5),status:'notice',am:'AM3',notes:'OVERDUE — urgent follow up needed',contacts:[{name:'Danilo Reyes',role:'IT Director',email:'danilo@luzonship.com',phone:'+63 917 321 0000'}],created:offset(-100)},
+];
+let nextId=16,editingId=null,tempContacts=[],activeAM='all',activeFilter='all';
 
-function daysUntil(s){const d=new Date(s); d.setHours(0,0,0,0); return Math.round((d-today)/86400000);}
-function fmtDate(s){return new Date(s).toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'});}
-function amAvatar(am,sz){const a=AMs[am]||{cls:'am1'}; return `<div class="am-avatar ${a.cls}" style="width:${sz}px;height:${sz}px">${am}</div>`;}
-
-function statusPill(s, disc){
-  if(disc) return `<span class="status-pill s-discontinued">Discontinued</span>`;
-  const m={notice:'s-notice',proposal:'s-proposal',signed:'s-signed',renewed:'s-renewed',none:'s-none'};
-  return `<span class="status-pill ${m[String(s).toLowerCase()]||'s-none'}">${String(s).toUpperCase()}</span>`;
+function daysPill(days){
+  if(days<0)return`<span class="days-pill d-gray">${Math.abs(days)}d overdue</span>`;
+  if(days<=10)return`<span class="days-pill d-red">${days}d left</span>`;
+  if(days<=30)return`<span class="days-pill d-amber">${days}d left</span>`;
+  if(days<=60)return`<span class="days-pill d-green">${days}d left</span>`;
+  return`<span class="days-pill d-blue">${days}d left</span>`;
+}
+function statusPill(s){
+  const m={notice:['s-notice','Notice Sent'],proposal:['s-proposal','Proposal Sent'],signed:['s-signed','Signed'],renewed:['s-renewed','Renewed'],none:['s-none','No Status']};
+  const[c,l]=m[s]||m.none;return`<span class="status-pill ${c}">${l}</span>`;
+}
+function amAvatar(am,sz){
+  const a=AMs[am]||{cls:'am1'};
+  return`<div class="am-avatar ${a.cls}" style="width:${sz}px;height:${sz}px;font-size:${sz<=20?8:9}px">${am}</div>`;
 }
 
 function getFiltered(){
-  let list=accounts.filter(a => activeFilter==='discontinued' ? a.discontinued : !a.discontinued);
-  if(activeAM!=='all') list=list.filter(a=>a.am===activeAM);
-  if(!['all','discontinued'].includes(activeFilter)) list=list.filter(a=>String(a.status).toLowerCase()===activeFilter);
+  let list=[...accounts];
   const q=document.getElementById('gSearch').value.toLowerCase();
-  if(q) list=list.filter(a=>a.name.toLowerCase().includes(q));
+  if(q)list=list.filter(a=>a.name.toLowerCase().includes(q)||a.domain.toLowerCase().includes(q));
+  if(activeAM!=='all')list=list.filter(a=>a.am===activeAM);
+  if(activeFilter==='critical')list=list.filter(a=>{const d=daysUntil(a.renewalDate);return d>=0&&d<=10;});
+  else if(activeFilter==='warning')list=list.filter(a=>{const d=daysUntil(a.renewalDate);return d>10&&d<=30;});
+  else if(activeFilter==='upcoming')list=list.filter(a=>{const d=daysUntil(a.renewalDate);return d>30&&d<=60;});
+  else if(activeFilter==='healthy')list=list.filter(a=>{const d=daysUntil(a.renewalDate);return d>60&&d<=90;});
+  else if(activeFilter==='overdue')list=list.filter(a=>daysUntil(a.renewalDate)<0);
+  else if(['notice','proposal','signed','renewed','none'].includes(activeFilter))list=list.filter(a=>a.status===activeFilter);
+  const s=document.getElementById('sortSel').value;
+  if(s==='days-asc')list.sort((a,b)=>daysUntil(a.renewalDate)-daysUntil(b.renewalDate));
+  else if(s==='days-desc')list.sort((a,b)=>daysUntil(b.renewalDate)-daysUntil(a.renewalDate));
+  else if(s==='name')list.sort((a,b)=>a.name.localeCompare(b.name));
+  else if(s==='am')list.sort((a,b)=>a.am.localeCompare(b.am)||daysUntil(a.renewalDate)-daysUntil(b.renewalDate));
   return list;
 }
 
-function render(){
+function renderList(){
   const list=getFiltered();
-  document.getElementById('accounts-list').innerHTML=list.map(a=>{
+  const el=document.getElementById('accounts-list');
+  if(!list.length){el.innerHTML='<div class="empty-state">No accounts match the current filter.</div>';return;}
+  el.innerHTML=list.map(a=>{
     const days=daysUntil(a.renewalDate);
-    const dayCls = days<0?'d-gray':(days<=10?'d-red':(days<=30?'d-amber':'d-blue'));
-    return `<div class="t-row" onclick="openPanel(${a.id})">
+    return`<div class="t-row" onclick="openPanel(${a.id})">
       <div>${amAvatar(a.am,22)}</div>
-      <div class="acct-name">${a.name}</div>
+      <div><div class="acct-name">${a.name}</div></div>
       <div class="cell">${a.domain}</div>
       <div class="cell">${fmtDate(a.renewalDate)}</div>
-      <div><span class="days-pill ${dayCls}">${days<0?Math.abs(days)+'d overdue':days+'d left'}</span></div>
-      <div>${statusPill(a.status, a.discontinued)}</div>
-      <div class="cell">${AMs[a.am]?AMs[a.am].name:a.am}</div>
-      <div></div>
+      <div>${daysPill(days)}</div>
+      <div>${statusPill(a.status)}</div>
+      <div style="font-size:11px;color:var(--muted)">${AMs[a.am]?AMs[a.am].name:a.am}</div>
+      <div class="row-actions">
+        <button class="icon-btn" title="Edit" onclick="event.stopPropagation();editAccount(${a.id})"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M8 2l2 2-6 6H2V8L8 2z" stroke="#6b6b66" stroke-width="1.2" fill="none"/></svg></button>
+        <button class="icon-btn" title="Delete" onclick="event.stopPropagation();deleteAccount(${a.id})"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 3h8M5 3V2h2v1M4 3v6h4V3" stroke="#6b6b66" stroke-width="1.2" stroke-linecap="round"/></svg></button>
+      </div>
     </div>`;
   }).join('');
+}
 
-  document.getElementById('s-total').textContent=accounts.filter(a=>!a.discontinued).length;
-  document.getElementById('s-crit').textContent=accounts.filter(a=>!a.discontinued && daysUntil(a.renewalDate)<=10).length;
-  document.getElementById('s-ren').textContent=accounts.filter(a=>String(a.status).toLowerCase()==='renewed').length;
-  document.getElementById('s-disc').textContent=accounts.filter(a=>a.discontinued).length;
-  
-  document.getElementById('cnt-discontinued').textContent=accounts.filter(a=>a.discontinued).length;
+function renderStats(){
+  const src=activeAM==='all'?accounts:accounts.filter(a=>a.am===activeAM);
+  document.getElementById('s-total').textContent=src.length;
+  document.getElementById('s-crit').textContent=src.filter(a=>{const d=daysUntil(a.renewalDate);return d>=0&&d<=10;}).length;
+  document.getElementById('s-exp').textContent=src.filter(a=>{const d=daysUntil(a.renewalDate);return d>=0&&d<=90;}).length;
+  document.getElementById('s-ren').textContent=src.filter(a=>a.status==='renewed').length;
   document.getElementById('cnt-all').textContent=accounts.length;
   ['AM1','AM2','AM3'].forEach(am=>document.getElementById('cnt-'+am).textContent=accounts.filter(a=>a.am===am).length);
-  ['notice','proposal','signed','renewed'].forEach(s=>{
-    document.getElementById('cnt-'+s).textContent=accounts.filter(a=>!a.discontinued && String(a.status).toLowerCase()===s).length;
-  });
-  renderPipeline();
+  const s=activeAM==='all'?accounts:accounts.filter(a=>a.am===activeAM);
+  document.getElementById('cnt-critical').textContent=s.filter(a=>{const d=daysUntil(a.renewalDate);return d>=0&&d<=10;}).length;
+  document.getElementById('cnt-warning').textContent=s.filter(a=>{const d=daysUntil(a.renewalDate);return d>10&&d<=30;}).length;
+  document.getElementById('cnt-upcoming').textContent=s.filter(a=>{const d=daysUntil(a.renewalDate);return d>30&&d<=60;}).length;
+  document.getElementById('cnt-healthy').textContent=s.filter(a=>{const d=daysUntil(a.renewalDate);return d>60&&d<=90;}).length;
+  document.getElementById('cnt-overdue').textContent=s.filter(a=>daysUntil(a.renewalDate)<0).length;
+  ['notice','proposal','signed','renewed','none'].forEach(st=>document.getElementById('cnt-'+st).textContent=s.filter(a=>a.status===st).length);
 }
 
 function renderPipeline(){
-  const stages=['notice','proposal','signed','renewed'];
-  const activeAccs = accounts.filter(a=>!a.discontinued);
+  const stages=[{key:'none',label:'No Status'},{key:'notice',label:'Notice Sent'},{key:'proposal',label:'Proposal Sent'},{key:'signed',label:'Contract Signed'},{key:'renewed',label:'Renewed'}];
+  const src=activeAM==='all'?accounts:accounts.filter(a=>a.am===activeAM);
   document.getElementById('pipeline-view').innerHTML=stages.map(st=>{
-    const items=activeAccs.filter(a=>String(a.status).toLowerCase()===st);
-    return `<div class="p-col"><div class="p-col-head">${st.toUpperCase()} <span class="p-col-cnt">${items.length}</span></div>
-    ${items.map(a=>`<div class="p-card" onclick="openPanel(${a.id})"><div class="p-card-name">${a.name}</div><div class="p-card-foot">${amAvatar(a.am,18)}</div></div>`).join('')}</div>`;
+    const items=src.filter(a=>a.status===st.key);
+    return`<div class="p-col">
+      <div class="p-col-head">${st.label}<span class="p-col-cnt">${items.length}</span></div>
+      ${items.length?items.map(a=>`<div class="p-card" onclick="openPanel(${a.id})">
+        <div class="p-card-name">${a.name}</div><div class="p-card-domain">${a.domain}</div>
+        <div class="p-card-foot">${daysPill(daysUntil(a.renewalDate))}${amAvatar(a.am,18)}</div>
+      </div>`).join(''):'<div style="font-size:11px;color:var(--hint);padding:8px 0">No accounts</div>'}
+    </div>`;
   }).join('');
 }
 
+function render(){renderStats();renderList();renderPipeline();}
+
+function setAM(am,el){
+  activeAM=am;
+  document.querySelectorAll('[id^="am-"]').forEach(e=>e.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+function setFilter(f,el){
+  activeFilter=activeFilter===f?'all':f;
+  document.querySelectorAll('[id^="f-"]').forEach(e=>e.classList.remove('active'));
+  if(activeFilter!=='all')el.classList.add('active');
+  const titles={critical:'Critical — Under 10 days',warning:'Warning — Under 30 days',upcoming:'Upcoming — Under 60 days',healthy:'Healthy — 60–90 days',overdue:'Overdue Accounts',notice:'Notice Sent',proposal:'Proposal Sent',signed:'Contract Signed',renewed:'Renewed',none:'No Status',all:'All Accounts'};
+  document.getElementById('page-title').textContent=titles[activeFilter]||'All Accounts';
+  render();
+}
+function showPage(p,el){
+  document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(e=>e.classList.remove('active'));
+  el.classList.add('active');
+  if(p==='pipeline')renderPipeline();
+}
+
 function openPanel(id){
-  const a=accounts.find(x=>x.id===id);
-  currentActionId=id;
+  const a=accounts.find(x=>x.id===id);if(!a)return;
+  const days=daysUntil(a.renewalDate);
+  const amInfo=AMs[a.am]||{full:a.am};
   document.getElementById('p-name').textContent=a.name;
-  document.getElementById('p-notes').textContent=a.notes || 'No notes.';
-  document.getElementById('p-am').innerHTML=`AM: ${AMs[a.am]?AMs[a.am].name:a.am}`;
-  document.getElementById('p-info').innerHTML=`Status: ${a.status} | Renewal: ${fmtDate(a.renewalDate)}`;
-  const isOverdue = daysUntil(a.renewalDate) < 0 && !a.discontinued;
-  document.getElementById('overdue-actions').style.display = isOverdue ? 'block' : 'none';
-  document.getElementById('btn-renew-trigger').onclick=()=>showActionModal('renew');
-  document.getElementById('btn-disc-trigger').onclick=()=>showActionModal('discontinue');
+  document.getElementById('p-domain').textContent=a.domain;
+  document.getElementById('p-am').innerHTML=`<div style="display:flex;align-items:center;gap:8px">${amAvatar(a.am,26)}<span style="font-size:13px">${amInfo.full}</span></div>`;
+  document.getElementById('p-info').innerHTML=`
+    <div class="info-row"><span class="info-key">Renewal Date</span><span class="info-val">${fmtDate(a.renewalDate)}</span></div>
+    <div class="info-row"><span class="info-key">Days Until</span><span>${daysPill(days)}</span></div>
+    <div class="info-row"><span class="info-key">Status</span><span>${statusPill(a.status)}</span></div>
+    ${a.notes?`<div style="margin-top:8px;padding:8px 10px;background:#f8f8f6;border-radius:8px;font-size:12px;color:var(--muted)">${a.notes}</div>`:''}`;
+  document.getElementById('p-contacts').innerHTML=a.contacts.length
+    ?a.contacts.map(c=>`<div class="c-card" style="margin-bottom:7px"><div class="c-av">${initials(c.name)}</div><div class="c-info"><div class="c-name">${c.name}</div><div class="c-detail">${c.role}${c.email?' · '+c.email:''}</div></div></div>`).join('')
+    :'<div style="font-size:12px;color:var(--hint)">No contacts added</div>';
+  const sc={notice:'#185FA5',proposal:'#534AB7',signed:'#3B6D11',renewed:'#0F6E56',none:'#d0d0ca'};
+  const sl={notice:'Notice Sent',proposal:'Proposal Sent',signed:'Contract Signed',renewed:'Renewed',none:'No status'};
+  document.getElementById('p-timeline').innerHTML=`
+    <div class="tl-item"><div class="tl-dot" style="background:${sc[a.status]||'#185FA5'}"></div><div class="tl-line"></div><div><div class="tl-text">Status: ${sl[a.status]}</div><div class="tl-date">Current</div></div></div>
+    <div class="tl-item"><div class="tl-dot" style="background:#d0d0ca"></div><div><div class="tl-text">Account created</div><div class="tl-date">${fmtDate(a.created)}</div></div></div>`;
   document.getElementById('detailPanel').classList.add('open');
   document.getElementById('panelOverlay').classList.add('open');
 }
-
-function showActionModal(type){
-  const a=accounts.find(x=>x.id===currentActionId);
-  document.getElementById('renew-fields').style.display= type==='renew'?'block':'none';
-  document.getElementById('disc-fields').style.display= type==='discontinue'?'block':'none';
-  document.getElementById('action-title').textContent = type==='renew' ? 'Renew Sub' : 'Discontinue';
-  document.getElementById('action-save-btn').onclick=async ()=>{
-    let update = {};
-    const ts = new Date().toLocaleDateString();
-    if(type==='renew'){
-      const d=document.getElementById('new-renew-date').value;
-      if(!d) return alert('Select date');
-      update = { renewalDate: d, status: 'renewed', notes: a.notes + `\n[${ts}] Renewed to ${d}` };
-    } else {
-      const r=document.getElementById('disc-reason').value;
-      update = { discontinued: "TRUE", status: "none", notes: a.notes + `\n[${ts}] DISC: ${r}` };
-    }
-    closeActionModal(); closePanel();
-    await syncUpdate(a.id, update);
-  };
-  document.getElementById('actionOverlay').classList.add('open');
+function closePanel(){
+  document.getElementById('detailPanel').classList.remove('open');
+  document.getElementById('panelOverlay').classList.remove('open');
 }
 
-function closeActionModal(){document.getElementById('actionOverlay').classList.remove('open');}
-function closePanel(){document.getElementById('detailPanel').classList.remove('remove'); document.getElementById('detailPanel').classList.remove('open'); document.getElementById('panelOverlay').classList.remove('open');}
-function setAM(am,el){activeAM=am; document.querySelectorAll('.sb-item').forEach(x=>x.classList.remove('active')); el.classList.add('active'); render();}
-function setFilter(f,el){activeFilter=f; document.querySelectorAll('.sb-item').forEach(x=>x.classList.remove('active')); el.classList.add('active'); render();}
-function showPage(p,el){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active')); document.getElementById('page-'+p).classList.add('active'); render();}
+function openModal(edit=false){
+  editingId=edit;
+  tempContacts=edit?[...accounts.find(a=>a.id===edit).contacts]:[];
+  if(edit){
+    const a=accounts.find(x=>x.id===edit);
+    document.getElementById('f-name').value=a.name;
+    document.getElementById('f-domain').value=a.domain;
+    document.getElementById('f-date').value=a.renewalDate;
+    document.getElementById('f-am').value=a.am;
+    document.getElementById('f-status').value=a.status;
+    document.getElementById('f-notes').value=a.notes||'';
+    document.getElementById('modal-title').textContent='Edit Account';
+    document.getElementById('save-btn').textContent='Save Changes';
+  }else{
+    ['f-name','f-domain','f-notes'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('f-date').value='';
+    document.getElementById('f-am').value='AM1';
+    document.getElementById('f-status').value='none';
+    document.getElementById('modal-title').textContent='Add Account';
+    document.getElementById('save-btn').textContent='Add Account';
+  }
+  renderModalContacts();
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');editingId=null;tempContacts=[];}
+function addContact(){
+  const n=document.getElementById('c-name').value.trim();if(!n)return;
+  tempContacts.push({name:n,role:document.getElementById('c-role').value.trim(),email:document.getElementById('c-email').value.trim(),phone:document.getElementById('c-phone').value.trim()});
+  ['c-name','c-role','c-email','c-phone'].forEach(id=>document.getElementById(id).value='');
+  renderModalContacts();
+}
+function removeContact(i){tempContacts.splice(i,1);renderModalContacts();}
+function renderModalContacts(){
+  document.getElementById('modal-contacts').innerHTML=tempContacts.map((c,i)=>
+    `<div class="c-card"><div class="c-av">${initials(c.name)}</div><div class="c-info"><div class="c-name">${c.name}${c.role?' · '+c.role:''}</div><div class="c-detail">${c.email||''}${c.phone?' · '+c.phone:''}</div></div><button class="c-remove" onclick="removeContact(${i})">✕</button></div>`
+  ).join('');
+}
+function saveAccount(){
+  const name=document.getElementById('f-name').value.trim();
+  const domain=document.getElementById('f-domain').value.trim();
+  const date=document.getElementById('f-date').value;
+  if(!name||!domain||!date){alert('Please fill in name, domain, and renewal date.');return;}
+  if(editingId){
+    const a=accounts.find(x=>x.id===editingId);
+    a.name=name;a.domain=domain;a.renewalDate=date;
+    a.am=document.getElementById('f-am').value;
+    a.status=document.getElementById('f-status').value;
+    a.notes=document.getElementById('f-notes').value.trim();
+    a.contacts=[...tempContacts];
+  }else{
+    accounts.push({id:nextId++,name,domain,renewalDate:date,am:document.getElementById('f-am').value,status:document.getElementById('f-status').value,notes:document.getElementById('f-notes').value.trim(),contacts:[...tempContacts],created:new Date().toISOString().slice(0,10)});
+  }
+  closeModal();render();
+}
+function editAccount(id){openModal(id);}
+function deleteAccount(id){if(!confirm('Delete this account?'))return;accounts=accounts.filter(a=>a.id!==id);closePanel();render();}
 
-loadLiveAccounts();
+render();
 </script>
 </body>
 </html>
