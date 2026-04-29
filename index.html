@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RenewTrack Pro - Live Edition</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f5f3;--surface:#ffffff;--border:#e4e4e0;--border-md:#d0d0ca;
+  --text:#1a1a18;--muted:#6b6b66;--hint:#9e9e99;
+  --blue-bg:#e6f1fb;--blue:#185FA5;--blue-dk:#0C447C;
+  --purple-bg:#eeedfe;--purple:#534AB7;--purple-dk:#3C3489;
+  --green-bg:#eaf3de;--green:#3B6D11;--green-dk:#27500A;
+  --teal-bg:#e1f5ee;--teal:#0F6E56;
+  --amber-bg:#faeeda;--amber:#854F0B;
+  --red-bg:#fcebeb;--red:#A32D2D;
+  --coral-bg:#faece7;--coral:#712B13;
+  --radius-md:8px;--radius-lg:12px;
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14px}
+.app{min-height:100vh;display:flex;flex-direction:column}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;display:flex;align-items:center;justify-content:space-between;height:54px;flex-shrink:0}
+.logo{font-size:15px;font-weight:600;letter-spacing:-.3px}
+.logo span{color:var(--blue)}
+.nav-tabs{display:flex;gap:2px;margin-left:16px}
+.nav-tab{padding:6px 14px;border-radius:var(--radius-md);font-size:13px;cursor:pointer;color:var(--muted);border:none;background:none;transition:all .15s;font-family:var(--font)}
+.nav-tab.active{background:#f0f0ed;color:var(--text);font-weight:500}
+.topbar-right{display:flex;gap:8px;align-items:center}
+.search-box{padding:7px 12px;border-radius:var(--radius-md);font-size:13px;border:1px solid var(--border-md);background:var(--surface);color:var(--text);font-family:var(--font);width:200px}
+.btn{padding:7px 14px;border-radius:var(--radius-md);font-size:13px;cursor:pointer;border:1px solid var(--border-md);background:var(--surface);color:var(--text);transition:all .15s;font-family:var(--font)}
+.btn-primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn-danger{color:var(--red);border-color:var(--border)}
+.layout{display:flex;flex:1;min-height:0}
+.sidebar{width:232px;background:var(--surface);border-right:1px solid var(--border);padding:14px 10px;flex-shrink:0;overflow-y:auto}
+.sidebar-label{font-size:10px;font-weight:600;color:var(--hint);text-transform:uppercase;letter-spacing:.8px;padding:0 8px;margin:16px 0 5px}
+.sb-item{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:var(--radius-md);font-size:13px;cursor:pointer;color:var(--muted);transition:all .12s;user-select:none}
+.sb-item.active{background:var(--blue-bg);color:var(--blue);font-weight:500}
+.s-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.badge{margin-left:auto;background:#f0f0ed;color:var(--muted);font-size:11px;padding:1px 7px;border-radius:10px;font-weight:500}
+.content{flex:1;overflow-y:auto;padding:20px;min-width:0}
+.page{display:none}
+.page.active{display:block}
+.content-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:8px;flex-wrap:wrap}
+.content-header h1{font-size:17px;font-weight:600}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:13px 15px}
+.stat-label{font-size:10px;color:var(--hint);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.stat-value{font-size:24px;font-weight:600}
+.table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.t-head{display:grid;grid-template-columns:26px 1.8fr 1.1fr 1fr 1.1fr 1fr 0.8fr 70px;padding:9px 14px;background:#f8f8f6;border-bottom:1px solid var(--border);font-size:10px;font-weight:600;color:var(--hint);text-transform:uppercase;letter-spacing:.5px;gap:4px}
+.t-row{display:grid;grid-template-columns:26px 1.8fr 1.1fr 1fr 1.1fr 1fr 0.8fr 70px;padding:11px 14px;border-bottom:1px solid var(--border);align-items:center;cursor:pointer;transition:background .1s;gap:4px}
+.t-row:hover{background:#f8f8f6}
+.acct-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cell{font-size:12px;color:var(--muted)}
+.days-pill{display:inline-flex;align-items:center;font-size:11px;font-weight:600;padding:3px 9px;border-radius:10px;white-space:nowrap}
+.d-red{background:var(--red-bg);color:var(--red)}
+.d-amber{background:var(--amber-bg);color:var(--amber)}
+.d-blue{background:var(--blue-bg);color:var(--blue-dk)}
+.d-gray{background:#f0f0ed;color:var(--hint)}
+.status-pill{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;white-space:nowrap}
+.s-notice{background:var(--blue-bg);color:var(--blue-dk)}
+.s-proposal{background:var(--purple-bg);color:var(--purple-dk)}
+.s-signed{background:var(--green-bg);color:var(--green-dk)}
+.s-renewed{background:var(--teal-bg);color:var(--teal)}
+.s-discontinued{background:var(--red-bg);color:var(--red)}
+.panel-overlay{display:none;position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.25)}
+.panel-overlay.open{display:block}
+.detail-panel{position:fixed;right:0;top:0;width:360px;height:100%;background:var(--surface);border-left:1px solid var(--border);overflow-y:auto;transform:translateX(100%);transition:transform .22s ease;z-index:160}
+.detail-panel.open{transform:translateX(0)}
+.panel-head{padding:54px 16px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between}
+.p-name{font-size:15px;font-weight:600}
+.panel-body{padding:14px 16px}
+.ps{margin-bottom:18px}
+.ps-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--hint);margin-bottom:9px}
+.info-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:7px}
+.action-box{margin-top:12px;padding:12px;border-radius:var(--radius-md);background:var(--bg);border:1px solid var(--border)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:flex-start;justify-content:center;padding-top:48px}
+.overlay.open{display:flex}
+.modal{background:var(--surface);border-radius:var(--radius-lg);width:400px;border:1px solid var(--border-md)}
+.modal-head{padding:16px 18px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-body{padding:18px}
+.f-label{font-size:11px;font-weight:600;color:var(--muted);margin-bottom:4px;display:block}
+.f-input{width:100%;padding:7px 10px;border-radius:var(--radius-md);border:1px solid var(--border-md);background:var(--surface);color:var(--text);font-size:13px;font-family:var(--font)}
+.am-avatar{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;flex-shrink:0}
+.am1{background:var(--purple-bg);color:var(--purple-dk)}
+.am2{background:var(--teal-bg);color:var(--teal)}
+.am3{background:var(--coral-bg);color:var(--coral)}
+.pipeline-view{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px}
+.p-col{min-width:190px;flex-shrink:0}
+.p-col-head{font-size:11px;font-weight:600;color:var(--muted);padding:0 0 9px;display:flex;align-items:center;justify-content:space-between}
+.p-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:11px 12px;margin-bottom:8px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:4px">
+      <div class="logo">Renew<span>Track</span></div>
+      <div class="nav-tabs">
+        <button class="nav-tab active" onclick="showPage('accounts',this)">Accounts</button>
+        <button class="nav-tab" onclick="showPage('pipeline',this)">Pipeline</button>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <input type="text" class="search-box" placeholder="Search..." id="gSearch" oninput="render()" />
+      <button class="btn btn-primary" onclick="alert('Add function disabled for sheet link demo. Use your Google Sheet to add rows.')">+ Add Row</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="sidebar">
+      <div class="sidebar-label">Account Manager</div>
+      <div class="sb-item active" id="am-all" onclick="setAM('all',this)">All AMs <span class="badge" id="cnt-all">0</span></div>
+      <div class="sb-item" id="am-AM1" onclick="setAM('AM1',this)">AM1 — Reyes <span class="badge" id="cnt-AM1">0</span></div>
+      <div class="sb-item" id="am-AM2" onclick="setAM('AM2',this)">AM2 — Santos <span class="badge" id="cnt-AM2">0</span></div>
+      <div class="sb-item" id="am-AM3" onclick="setAM('AM3',this)">AM3 — Cruz <span class="badge" id="cnt-AM3">0</span></div>
+
+      <div class="sidebar-label">Status</div>
+      <div class="sb-item" id="f-notice" onclick="setFilter('notice',this)">Notice Sent <span class="badge" id="cnt-notice">0</span></div>
+      <div class="sb-item" id="f-proposal" onclick="setFilter('proposal',this)">Proposal Sent <span class="badge" id="cnt-proposal">0</span></div>
+      <div class="sb-item" id="f-signed" onclick="setFilter('signed',this)">Signed <span class="badge" id="cnt-signed">0</span></div>
+      <div class="sb-item" id="f-renewed" onclick="setFilter('renewed',this)">Renewed <span class="badge" id="cnt-renewed">0</span></div>
+      
+      <div class="sidebar-label">Archives</div>
+      <div class="sb-item" id="f-discontinued" onclick="setFilter('discontinued',this)">
+        <div class="s-dot" style="background:var(--red)"></div>Discontinued
+        <span class="badge red" id="cnt-discontinued">0</span>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="page active" id="page-accounts">
+        <div class="content-header"><h1 id="page-title">Active Accounts</h1></div>
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-label">Total Active</div><div class="stat-value" id="s-total">0</div></div>
+          <div class="stat-card"><div class="stat-label">Critical</div><div class="stat-value" style="color:var(--red)" id="s-crit">0</div></div>
+          <div class="stat-card"><div class="stat-label">Renewed</div><div class="stat-value" style="color:var(--teal)" id="s-ren">0</div></div>
+          <div class="stat-card"><div class="stat-label">Discontinued</div><div class="stat-value" style="color:var(--red)" id="s-disc">0</div></div>
+        </div>
+        <div class="table-wrap">
+          <div class="t-head"><div></div><div>Account</div><div>Domain</div><div>Renewal</div><div>Remaining</div><div>Status</div><div>AM</div><div></div></div>
+          <div id="accounts-list"></div>
+        </div>
+      </div>
+      <div class="page" id="page-pipeline">
+        <div class="content-header"><h1>Pipeline</h1></div>
+        <div class="pipeline-view" id="pipeline-view"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ACTION MODAL -->
+<div class="overlay" id="actionOverlay">
+  <div class="modal">
+    <div class="modal-head"><h2 id="action-title">Update Account</h2><button class="modal-close" onclick="closeActionModal()">✕</button></div>
+    <div class="modal-body">
+      <div id="renew-fields" style="display:none">
+        <label class="f-label">New Renewal Date</label>
+        <input type="date" class="f-input" id="new-renew-date" style="margin-bottom:12px" />
+      </div>
+      <div id="disc-fields" style="display:none">
+        <label class="f-label">Reason for Discontinuation</label>
+        <textarea class="f-input" id="disc-reason" placeholder="Reason..." style="height:80px;margin-bottom:12px;width:100%"></textarea>
+      </div>
+      <button class="btn btn-primary" id="action-save-btn" style="width:100%">Save to Sheet</button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL PANEL -->
+<div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
+<div class="detail-panel" id="detailPanel">
+  <div class="panel-head"><div><div class="p-name" id="p-name"></div><div class="p-sub" id="p-domain"></div></div><button class="modal-close" onclick="closePanel()">✕</button></div>
+  <div class="panel-body">
+    <div class="ps"><div class="ps-title">Account Status</div><div id="p-info"></div></div>
+    <div id="overdue-actions" class="action-box" style="display:none">
+      <div style="font-weight:600; font-size:11px; margin-bottom:8px; color:var(--red)">ACTION REQUIRED: OVERDUE</div>
+      <div style="display:flex; gap:6px">
+        <button class="btn btn-primary btn-sm" id="btn-renew-trigger">Renew</button>
+        <button class="btn btn-danger btn-sm" id="btn-disc-trigger">Discontinue</button>
+      </div>
+    </div>
+    <div class="ps"><div class="ps-title">Account Manager</div><div id="p-am"></div></div>
+    <div class="ps"><div class="ps-title">Notes</div><div id="p-notes" style="font-size:12px; color:var(--muted); white-space: pre-wrap;"></div></div>
+  </div>
+</div>
+
+<script>
+// --- CONFIGURE YOUR SHEETDB URL HERE ---
+const API_URL = "https://sheetdb.io/api/v1/YOUR_API_ID"; 
+
+const today=new Date(); today.setHours(0,0,0,0);
+const AMs={AM1:{name:'Reyes',cls:'am1'},AM2:{name:'Santos',cls:'am2'},AM3:{name:'Cruz',cls:'am3'}};
+let accounts=[];
+let activeAM='all', activeFilter='all', currentActionId=null;
+
+async function loadLiveAccounts() {
+    try {
+        if(API_URL.includes("YOUR_API_ID")) {
+            console.warn("Please replace YOUR_API_ID with your actual SheetDB ID.");
+            return;
+        }
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        accounts = data.map(a => ({
+            ...a,
+            id: parseInt(a.id),
+            discontinued: String(a.discontinued).toUpperCase() === "TRUE"
+        }));
+        render();
+    } catch (err) { console.error("Error loading data:", err); }
+}
+
+async function syncUpdate(id, updatedData) {
+    try {
+        await fetch(`${API_URL}/id/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ data: updatedData })
+        });
+        loadLiveAccounts();
+    } catch (err) { console.error("Sync error:", err); }
+}
+
+function daysUntil(s){const d=new Date(s); d.setHours(0,0,0,0); return Math.round((d-today)/86400000);}
+function fmtDate(s){return new Date(s).toLocaleDateString('en-PH',{month:'short',day:'numeric',year:'numeric'});}
+function amAvatar(am,sz){const a=AMs[am]||{cls:'am1'}; return `<div class="am-avatar ${a.cls}" style="width:${sz}px;height:${sz}px">${am}</div>`;}
+
+function statusPill(s, disc){
+  if(disc) return `<span class="status-pill s-discontinued">Discontinued</span>`;
+  const m={notice:'s-notice',proposal:'s-proposal',signed:'s-signed',renewed:'s-renewed',none:'s-none'};
+  return `<span class="status-pill ${m[String(s).toLowerCase()]||'s-none'}">${String(s).toUpperCase()}</span>`;
+}
+
+function getFiltered(){
+  let list=accounts.filter(a => activeFilter==='discontinued' ? a.discontinued : !a.discontinued);
+  if(activeAM!=='all') list=list.filter(a=>a.am===activeAM);
+  if(!['all','discontinued'].includes(activeFilter)) list=list.filter(a=>String(a.status).toLowerCase()===activeFilter);
+  const q=document.getElementById('gSearch').value.toLowerCase();
+  if(q) list=list.filter(a=>a.name.toLowerCase().includes(q));
+  return list;
+}
+
+function render(){
+  const list=getFiltered();
+  document.getElementById('accounts-list').innerHTML=list.map(a=>{
+    const days=daysUntil(a.renewalDate);
+    const dayCls = days<0?'d-gray':(days<=10?'d-red':(days<=30?'d-amber':'d-blue'));
+    return `<div class="t-row" onclick="openPanel(${a.id})">
+      <div>${amAvatar(a.am,22)}</div>
+      <div class="acct-name">${a.name}</div>
+      <div class="cell">${a.domain}</div>
+      <div class="cell">${fmtDate(a.renewalDate)}</div>
+      <div><span class="days-pill ${dayCls}">${days<0?Math.abs(days)+'d overdue':days+'d left'}</span></div>
+      <div>${statusPill(a.status, a.discontinued)}</div>
+      <div class="cell">${AMs[a.am]?AMs[a.am].name:a.am}</div>
+      <div></div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('s-total').textContent=accounts.filter(a=>!a.discontinued).length;
+  document.getElementById('s-crit').textContent=accounts.filter(a=>!a.discontinued && daysUntil(a.renewalDate)<=10).length;
+  document.getElementById('s-ren').textContent=accounts.filter(a=>String(a.status).toLowerCase()==='renewed').length;
+  document.getElementById('s-disc').textContent=accounts.filter(a=>a.discontinued).length;
+  
+  document.getElementById('cnt-discontinued').textContent=accounts.filter(a=>a.discontinued).length;
+  document.getElementById('cnt-all').textContent=accounts.length;
+  ['AM1','AM2','AM3'].forEach(am=>document.getElementById('cnt-'+am).textContent=accounts.filter(a=>a.am===am).length);
+  ['notice','proposal','signed','renewed'].forEach(s=>{
+    document.getElementById('cnt-'+s).textContent=accounts.filter(a=>!a.discontinued && String(a.status).toLowerCase()===s).length;
+  });
+  renderPipeline();
+}
+
+function renderPipeline(){
+  const stages=['notice','proposal','signed','renewed'];
+  const activeAccs = accounts.filter(a=>!a.discontinued);
+  document.getElementById('pipeline-view').innerHTML=stages.map(st=>{
+    const items=activeAccs.filter(a=>String(a.status).toLowerCase()===st);
+    return `<div class="p-col"><div class="p-col-head">${st.toUpperCase()} <span class="p-col-cnt">${items.length}</span></div>
+    ${items.map(a=>`<div class="p-card" onclick="openPanel(${a.id})"><div class="p-card-name">${a.name}</div><div class="p-card-foot">${amAvatar(a.am,18)}</div></div>`).join('')}</div>`;
+  }).join('');
+}
+
+function openPanel(id){
+  const a=accounts.find(x=>x.id===id);
+  currentActionId=id;
+  document.getElementById('p-name').textContent=a.name;
+  document.getElementById('p-notes').textContent=a.notes || 'No notes.';
+  document.getElementById('p-am').innerHTML=`AM: ${AMs[a.am]?AMs[a.am].name:a.am}`;
+  document.getElementById('p-info').innerHTML=`Status: ${a.status} | Renewal: ${fmtDate(a.renewalDate)}`;
+  const isOverdue = daysUntil(a.renewalDate) < 0 && !a.discontinued;
+  document.getElementById('overdue-actions').style.display = isOverdue ? 'block' : 'none';
+  document.getElementById('btn-renew-trigger').onclick=()=>showActionModal('renew');
+  document.getElementById('btn-disc-trigger').onclick=()=>showActionModal('discontinue');
+  document.getElementById('detailPanel').classList.add('open');
+  document.getElementById('panelOverlay').classList.add('open');
+}
+
+function showActionModal(type){
+  const a=accounts.find(x=>x.id===currentActionId);
+  document.getElementById('renew-fields').style.display= type==='renew'?'block':'none';
+  document.getElementById('disc-fields').style.display= type==='discontinue'?'block':'none';
+  document.getElementById('action-title').textContent = type==='renew' ? 'Renew Sub' : 'Discontinue';
+  document.getElementById('action-save-btn').onclick=async ()=>{
+    let update = {};
+    const ts = new Date().toLocaleDateString();
+    if(type==='renew'){
+      const d=document.getElementById('new-renew-date').value;
+      if(!d) return alert('Select date');
+      update = { renewalDate: d, status: 'renewed', notes: a.notes + `\n[${ts}] Renewed to ${d}` };
+    } else {
+      const r=document.getElementById('disc-reason').value;
+      update = { discontinued: "TRUE", status: "none", notes: a.notes + `\n[${ts}] DISC: ${r}` };
+    }
+    closeActionModal(); closePanel();
+    await syncUpdate(a.id, update);
+  };
+  document.getElementById('actionOverlay').classList.add('open');
+}
+
+function closeActionModal(){document.getElementById('actionOverlay').classList.remove('open');}
+function closePanel(){document.getElementById('detailPanel').classList.remove('remove'); document.getElementById('detailPanel').classList.remove('open'); document.getElementById('panelOverlay').classList.remove('open');}
+function setAM(am,el){activeAM=am; document.querySelectorAll('.sb-item').forEach(x=>x.classList.remove('active')); el.classList.add('active'); render();}
+function setFilter(f,el){activeFilter=f; document.querySelectorAll('.sb-item').forEach(x=>x.classList.remove('active')); el.classList.add('active'); render();}
+function showPage(p,el){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active')); document.getElementById('page-'+p).classList.add('active'); render();}
+
+loadLiveAccounts();
+</script>
+</body>
+</html>
